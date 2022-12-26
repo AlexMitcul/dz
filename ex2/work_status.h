@@ -7,9 +7,9 @@ enum WorkStatus
 	EMPLOYED
 };
 
-void				pack_work_status(unsigned short int *info, enum WorkStatus status);
+void			pack_work_status(unsigned short int *info, enum WorkStatus status);
 enum WorkStatus	get_work_status(unsigned short int info);
-const char			*work_status_to_string(enum WorkStatus status);
+const char		*work_status_to_string(enum WorkStatus status);
 
 
 #endif

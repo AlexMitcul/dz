@@ -1,9 +1,6 @@
 #include "hair_color.h"
-#include <stdio.h>
 
-void decimalToBinary(int num);
-
-void			pack_hair_color(unsigned short int *info, enum HairColor color)
+void	pack_hair_color(unsigned short int *info, enum HairColor color)
 {
 	unsigned char	value;
 
@@ -21,7 +18,7 @@ enum HairColor	get_hair_color(unsigned short int info)
 	return (value);
 }
 
-const char		*hair_color_to_string(enum HairColor color)
+const char	*hair_color_to_string(enum HairColor color)
 {
 	if (color == BLACK)
 		return "Черный";

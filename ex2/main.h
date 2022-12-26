@@ -9,6 +9,4 @@
 #include "work_status.h"
 #include "height.h"
 
-
-
 #endif

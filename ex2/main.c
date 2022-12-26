@@ -18,23 +18,25 @@ void decimalToBinary(int num)
 
 void print_info(unsigned short int person)
 {
-	printf("Пол: %s;\n\tВозраст: %d;\n\tОбразование: %s;\n\tВолосы: %s;\n\tСемейное положение: %s;\n\tЗанятость: %s;\n\tРост: %s;\n",
-			gender_to_string(get_gender(person)),
-			get_age(person),
-			education_to_string(get_education(person)),
-			hair_color_to_string(get_hair_color(person)),
-			marital_status_to_string(get_marital_status(person)),
-			work_status_to_string(get_work_status(person)),
-			height_to_string(get_height(person))
-		);
+	printf("Пол: %s\n", gender_to_string(get_gender(person)));
+	printf("\tВозраст: %d\n", get_age(person));
+	printf("\tОбразование: %s\n", education_to_string(get_education(person)));
+	printf("\tВолосы: %s\n", hair_color_to_string(get_hair_color(person)));
+	printf("\tСемейное положение: %s\n", marital_status_to_string(get_marital_status(person)));
+	printf("\tЗанятость: %s\n", work_status_to_string(get_work_status(person)));
+	printf("\tРост: %s\n", height_to_string(get_height(person)));
 }
 
 void	save_person(unsigned short int **persons, int *index, int *max_index,
 					unsigned short int person)
 {
+	unsigned short int	*tmp;
+
 	if (*index == *max_index)
 	{
-		persons = realloc(persons, *max_index * 2);
+		tmp = realloc(*persons, *max_index * 2);
+		free(*persons);
+		*persons = tmp;
 		*max_index *= 2;
 	}
 	(*persons)[*index] = person;
@@ -44,7 +46,7 @@ void	save_person(unsigned short int **persons, int *index, int *max_index,
 int	main(void)
 {
 	int	count = 0;
-	int	max = 2;
+	int	max = 32;
 	unsigned short int	*persons;
 	unsigned short int	person;
 
@@ -68,44 +70,43 @@ int	main(void)
 		} while (*gender < '0' || *gender > '1');
 		pack_gender(&person, atoi(gender));
 
+		printf("Введите возраст: ");
+		scanf("%s", age);
+		pack_age(&person, atoi(age));
+
 		do
 		{
 			printf("Введите образование. (0 — нет, 1 — неполное ср., 2 — ср, 3 — выс.): ");
 			scanf("%s", education);
 		} while (*education < '0' || *education > '3');
 		pack_education(&person, atoi(education));
+		do
+		{
+			printf("Введите цвет волос (0 — нет, 1 — чер., 2 — бел, 3 — рыж.): ");
+			scanf("%s", hair_color);
+		} while (*hair_color < '0' || *hair_color > '3');
+		pack_hair_color(&person, atoi(hair_color));
 
-		// do
-		// {
-		// 	printf("Введите цвет волос (0 — нет, 1 — чер., 2 — бел, 3 — рыж.): ");
-		// 	scanf("%s", hair_color);
-		// } while (*hair_color < '0' || *hair_color > '3');
-		// pack_hair_color(&person, atoi(hair_color));
+		do
+		{
+			printf("Введите сем. полож. (0 — не сост., 1 — сост.): ");
+			scanf("%s", marital_status);
+		} while (*marital_status < '0' || *marital_status > '1');
+		pack_marital_status(&person, atoi(marital_status));
 
-		// do
-		// {
-		// 	printf("Введите сем. полож. (0 — не сост., 1 — сост.): ");
-		// 	scanf("%s", marital_status);
-		// } while (*marital_status < '0' || *marital_status > '1');
-		// pack_marital_status(&person, atoi(marital_status));
+		do
+		{
+			printf("Введите занятость (0 — безработный, 1 — работает): ");
+			scanf("%s", work_status);
+		} while (*work_status < '0' || *work_status > '1');
+		pack_work_status(&person, atoi(work_status));
 
-		// do
-		// {
-		// 	printf("Введите занятость (0 — безработный, 1 — работает): ");
-		// 	scanf("%s", work_status);
-		// } while (*work_status < '0' || *work_status > '1');
-		// pack_work_status(&person, atoi(work_status));
-
-		// do
-		// {
-		// 	printf("Введите рост (0 — <150 см., 1 — 150-170 см., 2 - 170-200 см., 3 - >200 см.): ");
-		// 	scanf("%s", height_category);
-		// } while (*height_category < '0' || *height_category > '3');
-		// pack_height(&person, atoi(height_category));
-
-		// printf("Введите возраст: ");
-		// scanf("%s", age);
-		// pack_age(&person, atoi(age));
+		do
+		{
+			printf("Введите рост (0 — <150 см., 1 — 150-170 см., 2 - 170-200 см., 3 - >200 см.): ");
+			scanf("%s", height_category);
+		} while (*height_category < '0' || *height_category > '3');
+		pack_height(&person, atoi(height_category));
 
 		save_person(&persons, &count, &max, person);
 
@@ -113,16 +114,6 @@ int	main(void)
 		scanf("%s", repeat);
 
 	}
-
-	// scanf("%s", age);
-	// pack_gender(&person, atoi(gender));
-	// pack_education(&person, atoi(education));
-	// pack_hair_color(&person, atoi(hair_color));
-	// pack_marital_status(&person, atoi(marital_status));
-	// pack_work_status(&person, atoi(work_status));
-	// pack_height(&person, atoi(height_category));
-	// pack_age(&person, atoi(age));
-	// save_person(&persons, &count, &max, person);
 
 	for (int i = 0; i < count; ++i)
 	{

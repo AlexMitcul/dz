@@ -9,8 +9,8 @@ enum Education
 	HIGHER
 };
 
-void pack_education(unsigned short int *info, enum Education education);
-enum Education get_education(unsigned short int info);
-const char *education_to_string(enum Education education);
+void			pack_education(unsigned short int *info, enum Education education);
+enum Education	get_education(unsigned short int info);
+const char		*education_to_string(enum Education education);
 
 #endif
