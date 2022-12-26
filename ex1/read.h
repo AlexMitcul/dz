@@ -16,6 +16,6 @@
 # define WORD_LEN 128
 # define BF_SIZE 1
 
-void	read_data(int fd, t_dict *dict);
+t_dict	*read_data(int fd);
 
 #endif
