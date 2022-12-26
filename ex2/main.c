@@ -121,5 +121,6 @@ int	main(void)
 		print_info(persons[i]);
 	}
 
+	free(persons);
 	return (0);
 }
