@@ -2,19 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void decimalToBinary(unsigned char num)
-{
-	int binaryNum[9] = {0}; // Assuming 8 bit integer.
-	int i=0;
-	for ( ;num > 0; ){
-		binaryNum[i++] = num % 2;
-		num /= 2;
-	}
-	for (int i = 7; i >= 0; --i)
-		printf("%d", binaryNum[i]);
-	printf("\n");
-}
-
 void	print_horizontal_symbols(unsigned char code, int line)
 {
 	unsigned char	value;
@@ -76,7 +63,6 @@ void	print_digits(char *digits)
 				index = 10;
 			else
 				index = *digit - '0';
-			// printf("%d\n", index);
 			if (line % 2 == 0)
 				print_horizontal_symbols(codes[index], line);
 			else
@@ -89,29 +75,13 @@ void	print_digits(char *digits)
 
 void	add_to_digits(char **digits, int *max, int *index, char digit)
 {
-	char	*tmp;
-
 	if (*max == *index)
 	{
-		tmp = realloc(*digits, *max * 2);
-		if (!tmp)
-			return ;
-		free(*digits);
-		*digits = tmp;
+		*digits = realloc(*digits, *max * 2);
 		*max *= 2;
 	}
 	(*digits)[*index] = digit;
 	(*index)++;
-}
-
-void	debug_print(char *digits)
-{
-	while (*digits)
-	{
-		printf("%c", *digits);
-		digits++;
-	}
-	printf("\n");
 }
 
 int	main(void)
@@ -119,9 +89,9 @@ int	main(void)
 	char	ch;
 	int		digits_max_count;
 	int		digits_count;
-	char	*digits;
+	char	*digits = NULL;
 
-	digits_max_count = 10;
+	digits_max_count = 2;
 	digits_count = 0;
 	digits = calloc(digits_max_count, sizeof(char));
 	if (!digits)
@@ -138,7 +108,6 @@ int	main(void)
 		scanf("%c", &ch);
 	}
 	printf("Вывод:\n");
-	// debug_print(digits);
 	print_digits(digits);
 	free(digits);
 	return (0);
