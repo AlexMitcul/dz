@@ -40,7 +40,7 @@ void	print_digits(char *digits)
 {
 	unsigned char	index;
 	char			*digit;
-	unsigned char codes[11] = {
+	unsigned char codes[12] = {
 		0b1110111,
 		0b0010010,
 		0b1011101,
@@ -51,7 +51,8 @@ void	print_digits(char *digits)
 		0b1010010,
 		0b1111111,
 		0b1111011,
-		0b0000000
+		0b0000000,
+		0b0001000
 	};
 
 	for (int line = 0; line < 5; ++line)
@@ -61,6 +62,8 @@ void	print_digits(char *digits)
 		{
 			if (*digit == ' ')
 				index = 10;
+			else if (*digit == '-')
+				index = 11;
 			else
 				index = *digit - '0';
 			if (line % 2 == 0)
@@ -90,21 +93,31 @@ int	main(void)
 	int		digits_max_count;
 	int		digits_count;
 	char	*digits = NULL;
+	char	minus;
 
 	digits_max_count = 2;
 	digits_count = 0;
 	digits = calloc(digits_max_count, sizeof(char));
-	if (!digits)
-		return (0);
+	minus = 0;
 
 	printf("Ввод:\n");
 	scanf("%c", &ch);
 	while (ch != '\n')
 	{
-		if (ch >= '0' && ch <= '9')
-			add_to_digits(&digits, &digits_max_count, &digits_count, ch);
-		else if (ch == ' ')
-			add_to_digits(&digits, &digits_max_count, &digits_count, ch);
+		if (ch == '-')
+			minus = 1;
+		else
+		{
+			if (ch >= '0' && ch <= '9')
+			{
+				if (minus)
+					add_to_digits(&digits, &digits_max_count, &digits_count, '-');
+				add_to_digits(&digits, &digits_max_count, &digits_count, ch);
+			}
+			else if (ch == ' ')
+				add_to_digits(&digits, &digits_max_count, &digits_count, ch);
+			minus = 0;
+		}
 		scanf("%c", &ch);
 	}
 	printf("Вывод:\n");
