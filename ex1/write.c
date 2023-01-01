@@ -1,28 +1,37 @@
 #include "write.h"
 
-/**
- * Программа должна:
- * - количество слов в тексте.
- * - количество предложений.
- * - среднее количество слов в предложении.
- * - подсчитывать общее число абзацев.
-*/
-void	write_description(int fd, t_text_info *text_info)
+void	write_result(t_info *info, t_word *dict, int *symbols_frequency)
 {
-	fprintf(fd, "Отчет по тексту:\n");
-	fprintf(fd, "Количество слов: %d\n", text_info->words_count);
-	fprintf(fd, "Количество предложений: %d\n", text_info->sentences_count);
-	fprintf(fd, "Среднее количество слов в предложении: %.2f\n",
-		(float) text_info->words_count / (float) text_info->sentences_count);
-	fprintf(fd, "Количество абзацев: %d\n", text_info->paragraph_count);
+	FILE	*fd;
 
-}
+	fd = fopen("result.txt", "w");
+	fprintf(fd, "paragraphs: %d\n", info->paragraphs_count);
+	fprintf(fd, "sentences: %d\n", info->sentences_count);
+	fprintf(fd, "words: %d\n", info->words_count);
+	fprintf(fd, "average: %.2f\n", (float)info->words_count / (float)info->sentences_count);
 
-void	write_to_file(t_text_info *text_info, t_dict *dict)
-{
-	int	fd;
+	fprintf(fd, "Частота появления каждого символа.\n");
+	char c = 0;
+	for (int i = 1; i < 128; ++i)
+	{
+		if (isalnum(i) || strchr(DELIMETERS, i))
+		{
+			c++;
+			if (i == '\t')
+				fprintf(fd, "\\t: %d\t", symbols_frequency[(int)'\t']);
+			else if (i == '\n')
+				fprintf(fd, "\\n: %d\t", symbols_frequency[(int)'\n']);
+			else
+				fprintf(fd, "%c: %d\t", i, symbols_frequency[i]);
+			if (c % 5 == 0)
+				fprintf(fd, "\n");
+		}
+	}
+	fprintf(fd, "\n");
 
-	fd = open("result.txt", O_RDWR);
-	write_description(fd, text_info);
-	// write_dict(dict);
+	while (dict)
+	{
+		fprintf(fd, "%s: %.3f\n", dict->value, (float)dict->repetition / (float)info->words_count);
+		dict = dict->next;
+	}
 }

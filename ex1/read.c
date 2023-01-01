@@ -49,7 +49,7 @@ void	read_file(int fd, t_info *info, int *sf, t_word **dict)
 	word = calloc(32, sizeof(char));
 	while (read(fd, bf, 1) > 0)
 	{
-		sf[*bf]++;
+		sf[(int)*bf]++;
 		if (isalnum(*bf))
 		{
 			add_symbol(&word, *bf);
@@ -70,4 +70,5 @@ void	read_file(int fd, t_info *info, int *sf, t_word **dict)
 			bzero(word, 32);
 		}
 	}
+	free(word);
 }

@@ -1,12 +1,14 @@
+
 #ifndef WRITE_H
 #define WRITE_H
 
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include <fcntl.h>
+#include <ctype.h>
+#include <string.h>
 
 #include "structs.h"
+#include "structs.h"
+
+void	write_result(t_info *info, t_word *dict, int *symbols_frequency);
 
 #endif

@@ -36,6 +36,16 @@ void	print_vertical_symbols(unsigned char code, int line)
 		write(STDOUT_FILENO, "   ", 3);
 }
 
+/**
+ * 0b1234567
+ *
+ * 		1
+ * 	2		3
+ * 		4
+ *	5		6
+ * 		7
+*/
+
 void	print_digits(char *digits)
 {
 	unsigned char	index;
@@ -95,7 +105,7 @@ int	main(void)
 	char	*digits = NULL;
 	char	minus;
 
-	digits_max_count = 2;
+	digits_max_count = 32;
 	digits_count = 0;
 	digits = calloc(digits_max_count, sizeof(char));
 	minus = 0;

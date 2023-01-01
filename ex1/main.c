@@ -38,6 +38,13 @@
  * (Частота слова = Количество повторений слова в тексте / Общее число слов).
 */
 
+/**
+ * Сохранение результатов в файл.
+ * Всю собранную информацию программа должна сохранять в файл-результат.
+*/
+
+void	free_dict(t_word *dict);
+
 int	main(void)
 {
 	char	filename[128];
@@ -54,47 +61,25 @@ int	main(void)
 
 	symbols_frequency = calloc(128, sizeof(int));
 
-	printf("Введите путь к файлу:\n");
-	scanf("%s", filename);
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
+	do
 	{
-		printf("Неверный путь к файлу.\n");
-		return (0);
-	}
-	read_file(fd, info, symbols_frequency, &dict);
-	close(fd);
-
-	printf("paragraphs: %d\n", info->paragraphs_count);
-	printf("sentences: %d\n", info->sentences_count);
-	printf("words: %d\n", info->words_count);
-	printf("average: %.2f\n", (float)info->words_count / (float)info->sentences_count);
-
-	printf("Частота появления каждого символа.\n");
-	char c = 0;
-	for (int i = 1; i < 128; ++i)
-	{
-		if (isalnum(i) || strchr(DELIMETERS, i))
+		printf("Введите путь к файлу: [Для выхода введите 'выход']\n");
+		scanf("%s", filename);
+		if (strcmp(filename, "выход") == 0)
+			break;
+		fd = open(filename, O_RDONLY);
+		if (fd < 0)
+			printf("Неверный путь к файлу.\n");
+		else
 		{
-			c++;
-			if (i == '\t')
-				printf("\\t: %d\t", symbols_frequency[(int)'\t']);
-			else if (i == '\n')
-				printf("\\n: %d\t", symbols_frequency[(int)'\n']);
-			else
-				printf("%c: %d\t", i, symbols_frequency[i]);
-			if (c % 5 == 0)
-				printf("\n");
+			read_file(fd, info, symbols_frequency, &dict);
+			close(fd);
 		}
-	}
-	printf("\n");
-
-	while (dict)
-	{
-		printf("%s: %.3f\n", dict->value, (float)dict->repetition / (float)info->words_count);
-		dict = dict->next;
-	}
-
-
+		bzero(filename, 128);
+	} while (1);
+	write_result(info, dict, symbols_frequency);
+	free_dict(dict);
+	free(info);
+	free(symbols_frequency);
 	return (0);
 }
