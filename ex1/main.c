@@ -25,12 +25,26 @@
  * - частоту каждого символа (включая пробелы и разделители) в тексте.
 */
 
+/**
+ * Подсчёт частоты слов.
+ *
+ * Программа должна считывать текст и дробить его на «слова»
+ * (непрерывная последовательность букв и(или) цифр).
+ *
+ * Формировать из полученного набора слов словарь, содержащий только
+ * уникальные слова (дублирований слов в словаре быть не должно).
+ *
+ * Словарь должен содержать информацию о частоте встречаемости слова
+ * (Частота слова = Количество повторений слова в тексте / Общее число слов).
+*/
+
 int	main(void)
 {
 	char	filename[128];
 	int		fd;
 	int		*symbols_frequency;
 	t_info	*info;
+	t_word	*dict = 0;
 
 
 	info = malloc(sizeof(t_info));
@@ -48,7 +62,7 @@ int	main(void)
 		printf("Неверный путь к файлу.\n");
 		return (0);
 	}
-	read_file(fd, info, symbols_frequency);
+	read_file(fd, info, symbols_frequency, &dict);
 	close(fd);
 
 	printf("paragraphs: %d\n", info->paragraphs_count);
@@ -58,15 +72,29 @@ int	main(void)
 
 	printf("Частота появления каждого символа.\n");
 	char c = 0;
-	for (int i = 0; i < 128; ++i)
+	for (int i = 1; i < 128; ++i)
 	{
 		if (isalnum(i) || strchr(DELIMETERS, i))
 		{
 			c++;
-			printf("%c: %d\t", i, symbols_frequency[i]);
+			if (i == '\t')
+				printf("\\t: %d\t", symbols_frequency[(int)'\t']);
+			else if (i == '\n')
+				printf("\\n: %d\t", symbols_frequency[(int)'\n']);
+			else
+				printf("%c: %d\t", i, symbols_frequency[i]);
 			if (c % 5 == 0)
 				printf("\n");
 		}
 	}
+	printf("\n");
+
+	while (dict)
+	{
+		printf("%s: %.3f\n", dict->value, (float)dict->repetition / (float)info->words_count);
+		dict = dict->next;
+	}
+
+
 	return (0);
 }
